@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% block title %}
+  <title>Modern Navbar</title>
+  {% endblock title %}
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/" style="padding-left: 20px;">Arogyam</a>
+      <div class="d-flex order-lg-3">
+
+
+        <style>
+          .btn-pink {
+            background-color: #ec4d67;
+            color: white;
+          }
+
+          .btn-pink:hover,
+          .btn-pink:focus {
+            background-color: rgb(255, 255, 255);
+            transform: scale(1.1);
+            outline: 2px solid;
+            box-shadow: none;
+          }
+        </style>
+      </div>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-center order-lg-2" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/heal_chat">Chat</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/heart">Heart</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/foodmate">Nutrify</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Contact</a>
+          </li>
+        </ul>
+      </div>
+
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oxygen:wght@300;400;700&display=swap');
+
+        body {
+          font-family: 'Oxygen', sans-serif;
+        }
+
+        .nav-link {
+          position: relative;
+          overflow: hidden;
+          text-decoration: none;
+        }
+
+        .nav-link::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 100%;
+          border-bottom: 2px solid;
+          transition: all 0.3s;
+        }
+
+        .navbar {
+          position: sticky;
+          top: 0;
+          z-index: 10000;
+          /* Ensure navbar stays on top of other content */
+        }
+
+        .nav-link:hover::after {
+          right: 0;
+        }
+      </style>
+    </div>
+  </nav>
+
+  {% block content %}{% endblock content %}
+</body>
+
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Demonstration of ChatGPT API in a Python Flask Application. A Skolo Online course.">
+
+  <title>Doc Talk</title>
+  <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/iba_logo.png') }}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Manrope', sans-serif;
+      background-color: #f8f9fa;
+      color: #343a40;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .navbar {
+      background-color: #ffffff;
+      display: flex;
+      justify-content: start; /* Align items to the start */
+      align-items: center;
+      /* Centers children horizontally *
+      /* Centers children vertically */
+    }
+
+    .navbar-brand {
+      color: #000000 !important;
+      font-weight: bold;
+      padding-left: 20px;
+    }
+
+    .nav-link {
+      color: #000000 !important;
+      display: flex;
+      justify-content: center;
+      text-align: center;
+      margin-left: 50rem;
+    }
+
+    @media (max-width: 968px) {
+        .navbar {
+            flex-direction: column;
+            padding: 10px;
+        }
+
+        .navbar-brand, .nav-link {
+            padding-left: 0;
+            margin-left: 0;
+            justify-content: flex-start;
+        }
+
+        .nav-link {
+            margin-left: 0; /* Remove the large left margin on mobile */
+            padding: 5px 0; /* Add some vertical padding for touch targets */
+        }
+
+        .container {
+            width: 90%; /* Make the container width responsive */
+            margin: 20px auto; /* Center the container with automatic margins */
+        }
+    }
+    .container {
+      max-width: 800px;
+      margin-top: 20px;
+      flex-grow: 1;
+      overflow-y: auto;
+      padding-bottom: 100px;
+    }
+
+    .lead {
+      color: #495057;
+    }
+
+    .highlight {
+      color: #ec4d67;
+      font-weight: bold;
+    }
+
+    .link-profile {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .link-profile:hover {
+      text-decoration: underline;
+    }
+
+    .demo-questions ul {
+      display: flex;
+      flex-wrap: wrap;
+      list-style-type: none;
+      padding: 0;
+      justify-content: space-between;
+    }
+
+    .question {
+      cursor: pointer;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      flex: 1 1 calc(33.333% - 10px);
+      text-align: center;
+      background-color: #ffffff;
+      border: 1px solid #dee2e6;
+      transition: background-color 0.3s;
+    }
+
+    .question:hover {
+      background-color: #f8f9fa;
+    }
+
+    .input-group {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: #ffffff;
+      padding: 10px 20px;
+      border-top: 1px solid #dee2e6;
+      z-index: 1000;
+    }
+
+    .input-group input {
+      border: 1px solid #ced4da;
+      border-radius: 0.25rem 0 0 0.25rem;
+    }
+
+    .input-group button {
+      border-radius: 0 0.25rem 0.25rem 0;
+      background-color: #ec4d67;
+      border: none;
+    }
+
+    .list-group-item {
+      background-color: #ffffff;
+      border: 1px solid #dee2e6;
+      margin-bottom: 10px;
+    }
+
+    .list-group-item p {
+      margin: 0;
+      color: #495057;
+    }
+
+    #response .skeleton1,
+    #response .skeleton2,
+    #response .skeleton3 {
+      min-height: 18px;
+      padding: 10px;
+      border-radius: 4px;
+      background-size: 40px 100%;
+      background-repeat: no-repeat;
+      background-position: left -40px top 0;
+      animation: shine 1s ease infinite;
+    }
+
+    .skeleton1 {
+      background-color: #e0e0e0;
+      width: 70%;
+    }
+
+    .skeleton2 {
+      background-color: #e0e0e0;
+      width: 50%;
+    }
+
+    .skeleton3 {
+      background-color: #e0e0e0;
+      width: 60%;
+    }
+
+    @keyframes shine {
+      to {
+        background-position: right -40px top 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar sticky-top navbar-expand-lg">
+    <a class="navbar-brand" href="#">Doc Talk</a>
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <div>
+      <p class="lead">This project is based on the free Gemini API recently released by Google. <span
+          class="highlight">15 queries per minute</span>. For more information, visit my <a href="#" target="_blank"
+          class="link-profile">Profile</a>.</p>
+      <div class="demo-questions">
+        <h4 style="text-align: center;">Try this!</h4>
+        <ul>
+          <li class="question" data-value="I have a headache. How to cure at Home?">I have a headache. How to cure at
+            Home?</li>
+          <li class="question" data-value="What are some ways to improve my sleep quality?">What are some ways to
+            improve my sleep quality?</li>
+          <li class="question" data-value="How to stay healthy as a Student?">How to stay healthy as a Student?</li>
+        </ul>
+      </div>
+
+      <div id="list-group" class="list-group"></div>
+    </div>
+  </main>
+
+  <div class="input-group">
+    <input type="text" class="form-control" id="chat-input" placeholder="Type your question...">
+    <button id="gpt-button" class="btn btn-primary">Ask</button>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+    integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
+    </script>
+
+  <script>
+    document.querySelectorAll('.question').forEach(item => {
+      item.addEventListener('click', event => {
+        const questionText = event.target.getAttribute('data-value');
+        document.getElementById('chat-input').value = questionText;
+      });
+    });
+
+    $("#chat-input").keypress(function (e) {
+      if (e.which == 13) {
+        $("#gpt-button").click();
+      }
+    });
+
+    $("#gpt-button").click(function () {
+      var question = $("#chat-input").val();
+      let html_data = `
+        <a class="list-group-item list-group-item-action d-flex gap-3 py-3">
+          <img src="https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png" alt="User" width="32" height="32" class="rounded-circle flex-shrink-0">
+          <div class="d-flex gap-2 w-100 justify-content-between">
+            <div>
+              <p class="mb-0">${question}</p>
+            </div>
+          </div>
+        </a>
+        <div id="response">
+          <div class="py-3" id="ok-good">
+            <h2 class="skeleton1"></h2>
+            <h2 class="skeleton2"></h2>
+            <h2 class="skeleton3"></h2>
+          </div>
+        </div>`;
+      $("#chat-input").val("");
+      $("#list-group").append(html_data);
+
+      if ($("#ok-good").length) {
+        $('html, body').animate({
+          scrollTop: $("#ok-good").offset().top
+        }, 100);
+      }
+
+      $.ajax({
+        type: "POST",
+        url: "/heal_chat",
+        data: {
+          'prompt': question
+        },
+        success: function (data) {
+          // Clean the response data
+          let cleanData = data.replace(/[*#]/g, '').replace(/< br >/g, '<br>').trim();
+
+          // Create HTML for the response
+          let gpt_data = `
+      <a class="list-group-item list-group-item-action d-flex gap-3 py-3">
+        <img src="{{ url_for('static', filename='images/robot-solid.svg') }}" alt="Bot" width="32" height="32" class="rounded-circle flex-shrink-0">
+        <div class="d-flex gap-2 w-100 justify-content-between">
+          <div>
+            <p id="typing-demo" class="mb-0"></p>
+          </div>
+        </div>
+      </a>`;
+          $("#list-group").append(gpt_data);
+          $('div#response:last').html('');
+
+          var i = 0;
+          var speed = 10;
+
+          // Typewriter effect
+          function typeWriter() {
+            if (i < cleanData.length) {
+              if (cleanData.charAt(i) === ':') {
+                // Check if the character is ':', indicating a bold section
+                $("p#typing-demo:last").append('<b>');
+                i++;
+                while (i < cleanData.length && cleanData.charAt(i) !== ' ') {
+                  // Append characters until space is encountered
+                  $("p#typing-demo:last").append(cleanData.charAt(i));
+                  i++;
+                }
+                $("p#typing-demo:last").append('</b>');
+              } else {
+                // Normal text
+                $("p#typing-demo:last").append(cleanData.charAt(i));
+              }
+              i++;
+              setTimeout(typeWriter, speed);
+            }
+          }
+
+          typeWriter();
+        }
+      });
+
+    });
+  </script>
+</body>
+
+</html>
