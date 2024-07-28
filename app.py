@@ -15,49 +15,44 @@ genai.configure(api_key=my_api_key_gemini)
 app = Flask(__name__)
 import pickle
 import numpy as np
-model=pickle.load(open('model.pkl','rb'))  
+with open('model/diabetes.pkl', 'rb') as file:
+    diabetes_model = pickle.load(file)
+
+# Verify that the model has been loaded
+print("Model loaded successfully!")
 @app.route('/main')
 def index():
     return render_template("main.html")
 @app.route('/')
 def home():
     return render_template("index.html")
-@app.route('/heart')
-def heart():
-    return render_template("heart.html")
-@app.route('/predict_heart', methods=['POST'])
+@app.route('/diabetes')
+def diabetes():
+    return render_template("diabetes.html")
+@app.route('/predict_diabetes', methods=['POST'])          
 def predict():
-    logging.info("Received form data: %s", request.form)
     # Collecting input data
     input_data = np.array([
-        int(request.form.get('age')),
-        int(request.form.get('sex')),
-        int(request.form.get('cp')),
-        int(request.form.get('trestbps')),
-        int(request.form.get('chol')),
-        int(request.form.get('fbs')),
-        int(request.form.get('restecg')),
-        int(request.form.get('thalach')),
-        int(request.form.get('exang')),
-        float(request.form.get('oldpeak')),
-        int(request.form.get('slope')),
-        int(request.form.get('ca')),
-        int(request.form.get('thal'))
+        int(request.form.get('Pregnancies')),
+        int(request.form.get('Glucose')),
+        int(request.form.get('BloodPressure')),
+        int(request.form.get('SkinThickness')),
+        int(request.form.get('Insulin')),
+        float(request.form.get('BMI')),
+        float(request.form.get('DiabetesPedigreeFunction')),
+        int(request.form.get('Age'))
     ]).reshape(1, -1)  # Reshaping to ensure it's a single sample
     input_df = pd.DataFrame(input_data, columns=[
-        'age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 
-        'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal'
-    ])
-
+        'Pregnancies', 'Glucose', 'BloodPressure', 'SkinThickness', 'Insulin', 'BMI', 'DiabetesPedigreeFunction', 
+        'Age'])
     # Prediction
-    heart_result = model.predict(input_data)
+    diabetes_result = diabetes_model.predict(input_data)
 
-    if heart_result[0] == 1: 
+    if diabetes_result[0] == 1: 
         prediction = "The patient seems to have heart disease:("
     else:
         prediction = "The patient seems to be Normal:)"
-    logging.info("Prediction result: %s", prediction)
-    return render_template('heart_result.html', heart_result=prediction)
+    return render_template('diabetes_result.html', diabetes_result=prediction)
 
 
 # Define your 404 error handler to redirect to the index page
@@ -129,7 +124,7 @@ def upload():
         """
 
         # Simulate API response (replace with actual API call)
-        model1 = genai.GenerativeModel('gemini-pro-vision')
+        model1 = genai.GenerativeModel('gemini-1.5-flash')
         response = model1.generate_content([input_prompt, image_parts[0]])
         result = response.text
 
