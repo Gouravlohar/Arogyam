@@ -1,0 +1,136 @@
+{% extends "main.html" %}
+{% block title %}
+<title>Heart</title>
+{% endblock title %}
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <h2 class="text-center mb-4">Heart Disease Prediction Form</h2>
+      <form class="p-5 rounded shadow"  action="/predict_heart" method="post">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="age">Age</label>
+            <input type="number" class="form-control" id="age" name="age" placeholder="Enter Age">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="sex">Sex</label>
+            <select id="sex" name="sex" class="form-control">
+                <option selected>Choose...</option>
+                <option value="1">Male</option>
+                <option value="0">Female</option>
+            </select>
+        </div>
+        </div>
+        <div class="form-group">
+          <label for="cp">Chest Pain Type</label>
+          <select id="cp" name="cp" class="form-control">
+              <option selected>Choose...</option>
+              <option value="0">asymptomatic</option>
+              <option value="1">atypical angina</option>
+              <option value="2">non-anginal pain</option>
+              <option value="3">typical angina</option>
+          </select>
+      </div>
+        <div class="form-group">
+          <label for="trestbps">Resting Blood Pressure</label>
+          <input type="number" class="form-control" id="trestbps" name="trestbps" placeholder="Enter Resting Blood Pressure">
+        </div>
+        <div class="form-group">
+          <label for="chol">Serum Cholesterol</label>
+          <input type="number" class="form-control" id="chol" name="chol" placeholder="Enter Serum Cholesterol">
+        </div>
+        <div class="form-group">
+          <label for="fbs">Fasting Blood Sugar</label>
+          <select id="fbs" name="fbs" class="form-control">
+              <option selected>Choose...</option>
+              <option value="1">True (> 120 mg/dl)</option>
+              <option value="0">False (<= 120 mg/dl)</option>
+          </select>
+      </div>
+      <div class="form-group">
+        <label for="restecg">Resting Electrocardiographic Results</label>
+        <select id="restecg" name="restecg" class="form-control">
+            <option selected>Choose...</option>
+            <option value="0">Showing probable or definite left ventricular hypertrophy by Estes criteria</option>
+            <option value="1">Normal</option>
+            <option value="2">Having ST-T wave abnormality (T wave inversions and/or ST elevation or depression of > 0.05 mV)</option>
+        </select>
+    </div>
+        <div class="form-group">
+          <label for="thalach">Maximum Heart Rate Achieved</label>
+          <input type="number" class="form-control" id="thalach" name="thalach" placeholder="Enter Maximum Heart Rate Achieved">
+        </div>
+        <div class="form-group">
+          <label for="exang">Exercise Induced Angina</label>
+          <select id="exang" name="exang" class="form-control">
+            <option selected>Choose...</option>
+            <option  value="1">Yes</option>
+            <option   value="0">No</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="oldpeak">Oldpeak</label>
+          <input type="number" class="form-control" id="oldpeak" name="oldpeak" placeholder="Enter Oldpeak">
+        </div>
+        <div class="form-group">
+          <label for="slope">Slope of the Peak Exercise ST Segment</label>
+          <select id="slope" name="slope" class="form-control">
+              <option selected>Choose...</option>
+              <option value="1">Upsloping</option>
+              <option value="2">Flat</option>
+              <option value="3">Downsloping</option>
+          </select>
+      </div>
+      <div class="form-group">
+        <label for="ca">Number of Major Vessels</label>
+        <select id="ca" name="ca" class="form-control">
+            <option selected>Choose...</option>
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+        </select>
+    </div>
+        <div class="form-group">
+          <label for="thal">Thalassemia</label>
+          <select id="thal" name="thal" class="form-control">
+              <option selected>Choose...</option>
+              <option value="1">Fixed defect (no blood flow in some part of the heart)</option>
+              <option value="2">Normal blood flow</option>
+              <option value="3">Reversible defect (a blood flow is observed but it is not normal)</option>
+          </select>
+      </div>
+        <div class="button-container d-flex justify-content-center">
+          <button type="submit" class="button">Predict</button>
+      </div>
+      
+      <style>
+          .button-container {
+            display: inline-block;
+            padding: 5px 10px; /* reduced padding */
+            font-size: 14px; /* reduced font-size */
+            font-weight: bold;
+            text-align: center;
+            
+          }
+          .button {
+            background-color: #ec4d67;
+            border-color: #ec4d67;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 50px;
+          }
+
+          .button:hover {
+            background-color: #ffffff;
+            border-color: #ec4d67;
+            color: #ec4d67;
+          }
+        </style>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

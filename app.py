@@ -18,6 +18,8 @@ import pickle
 import numpy as np
 with open('model/diabetes.pkl', 'rb') as file:
     diabetes_model = pickle.load(file)
+with open('model/heart.pkl', 'rb') as file:
+    heart_model = pickle.load(file)
 
 # Verify that the model has been loaded
 print("Model loaded successfully!")
@@ -132,6 +134,34 @@ def upload():
         return jsonify(result=result, image=encoded_image)
     
     return jsonify(error='No file uploaded'), 400
+
+@app.route('/heart')
+def heart():
+    return render_template("heart.html")
+@app.route('/predict_heart', methods=['POST'])
+def predict_heart():
+    age = int(request.form.get('age'))
+    sex = int(request.form.get('sex'))
+    cp = int(request.form.get('cp'))
+    trestbps = int(request.form.get('trestbps'))
+    chol = int(request.form.get('chol'))
+    fbs = int(request.form.get('fbs'))
+    restecg = int(request.form.get('restecg'))
+    thalach = int(request.form.get('thalach'))
+    exang = int(request.form.get('exang'))
+    oldpeak = float(request.form.get('oldpeak'))
+    slope = int(request.form.get('slope'))
+    ca = int(request.form.get('ca'))
+    thal = int(request.form.get('thal'))
+
+    heart_result = heart_model.predict(np.asarray([age,sex,cp,trestbps,chol,fbs,restecg,thalach,exang,oldpeak,slope,ca,thal]).reshape(1,-1))
+
+    if heart_result[0] == 1: 
+        heart_prediction = "The patient seems to have heart disease:("
+    else:
+        heart_prediction = "The patient seems to be Normal:)"
+
+    return render_template('heart_result.html', heart_result=heart_prediction)
 @app.route('/about')
 def about():
     return render_template("about.html")
