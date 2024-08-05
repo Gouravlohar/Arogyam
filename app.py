@@ -7,7 +7,8 @@ import logging
 import numpy as np
 import pandas as pd
 chat_model = genai.GenerativeModel('gemini-pro')
-
+import warnings
+warnings.filterwarnings('ignore')
 import os
 my_api_key_gemini = os.getenv('GOOGLE_API_KEY')
 
@@ -49,7 +50,7 @@ def predict():
     diabetes_result = diabetes_model.predict(input_data)
 
     if diabetes_result[0] == 1: 
-        prediction = "The patient seems to have heart disease:("
+        prediction = "The patient seems to have Diabetes:("
     else:
         prediction = "The patient seems to be Normal:)"
     return render_template('diabetes_result.html', diabetes_result=prediction)
@@ -131,7 +132,9 @@ def upload():
         return jsonify(result=result, image=encoded_image)
     
     return jsonify(error='No file uploaded'), 400
-
+@app.route('/about')
+def about():
+    return render_template("about.html")
 if __name__ == "__main__":
     app.run(debug=True)
     

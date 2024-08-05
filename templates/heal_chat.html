@@ -29,12 +29,11 @@
     .navbar {
       background-color: #ffffff;
       display: flex;
-      justify-content: start; /* Align items to the start */
+      justify-content: center; /* Align items to the start */
       align-items: center;
-      /* Centers children horizontally *
-      /* Centers children vertically */
-    }
 
+    }
+  
     .navbar-brand {
       color: #000000 !important;
       font-weight: bold;
@@ -46,7 +45,6 @@
       display: flex;
       justify-content: center;
       text-align: center;
-      margin-left: 50rem;
     }
 
     @media (max-width: 968px) {
@@ -62,13 +60,13 @@
         }
 
         .nav-link {
-            margin-left: 0; /* Remove the large left margin on mobile */
-            padding: 5px 0; /* Add some vertical padding for touch targets */
+            margin-left: 0; 
+            padding: 5px 0; 
         }
 
         .container {
-            width: 90%; /* Make the container width responsive */
-            margin: 20px auto; /* Center the container with automatic margins */
+            width: 90%; 
+            margin: 20px auto; 
         }
     }
     .container {
@@ -195,6 +193,9 @@
     <ul class="navbar-nav">
       <li class="nav-item active">
         <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="/about">Contact <span class="sr-only">(current)</span></a>
       </li>
     </ul>
   </nav>

@@ -55,7 +55,7 @@
             <a class="nav-link" href="/foodmate">Nutrify</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Contact</a>
+            <a class="nav-link" href="/about">Contact</a>
           </li>
         </ul>
       </div>
@@ -87,6 +87,9 @@
           position: sticky;
           top: 0;
           z-index: 10000;
+          background-color: #fff; /* Add a background color to ensure it is visible */
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          overflow: visible;
           /* Ensure navbar stays on top of other content */
         }
 
@@ -96,7 +99,9 @@
       </style>
     </div>
   </nav>
-
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   {% block content %}{% endblock content %}
 </body>
 
