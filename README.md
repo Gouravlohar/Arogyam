@@ -2,7 +2,7 @@
 
 **Arogyam** is a health assistant web app designed to provide AI-driven health predictions and insights. Deployed on Azure, Arogyam helps users assess the risk of common health conditions like diabetes and heart disease, and also offers nutritional analysis from food images.
 
-[Arogyam](https://raw.githubusercontent.com/Gouravlohar/Diagnosify/main/14.png)
+![Arogyam Banner](https://raw.githubusercontent.com/Gouravlohar/Diagnosify/main/14.png)
 
 ## Features 🚀
 
